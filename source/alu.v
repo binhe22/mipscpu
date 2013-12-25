@@ -45,7 +45,7 @@ module alu (alu_zero_flag, alu_out, data_1, data_2, sel);
 	
 	wire oflow_add;	//加法溢出位
 	wire oflow_sub;	//减法溢出位 
-   wire oflow;			//总的溢出位
+	wire oflow;			//总的溢出位
 	
 	output alu_zero_flag;
 	output [word_size-1: 0] alu_out;

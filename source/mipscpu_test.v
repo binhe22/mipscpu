@@ -54,7 +54,9 @@ module mipscpu_test;
 		.alu_out(alu_out), 
 		.data_1(data_1), 
 		.data_2(data_2), 
-		.sel(sel)
+		.sel(sel),
+		
+		.pc_counter(pc_counter), .data_in(data_in), .load_pc(load_pc), .offset(offset), .branch(branch), .clk(clk), .rst(rst)
 	);
 
 	initial begin
@@ -101,7 +103,9 @@ module mipscpu_test;
 				$display($time, "%h SLT %h=%h", data_1, data_2, alu_out);
 		/* end test for alu module */
 		
+		/*test for pc module */
 		
+		/*end test for pc module */
 	end
 	
 	always
