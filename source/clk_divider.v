@@ -1,4 +1,4 @@
-module top_module
+module clk_divider
 (
     CLK, RSTn, LED_Out,KEY_OK
 );
