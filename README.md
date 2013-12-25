@@ -7,7 +7,7 @@ Refered to the MIPS ,we designed our instructio as follows:
 
 
 
-    void advance_pc (SWORD offset){
+    void advance_pc (Byte offset){
          PC  =  nPC;
          nPC  += offset;
     }
@@ -72,9 +72,13 @@ Encoding:
 0110 dddd ssss tttt
 
 * add reg1 reg2 reg3
-> Adds two registers and stores the result in a registe  
-add $d, $s, $t  
+> Description:  
+adds two registers and stores the result in a registe  
+Operation:  
 $d = $s + $t; advance_pc (2);  
+Syntax:  
+add $d, $s, $t  
+Encoding:  
 0111 dddd ssss tttt
 
 * sub reg1 reg2 reg3
@@ -101,7 +105,7 @@ Encoding:
 >Description:  
 Branches if the two registers are equal  
 Operation:  
-if $s == $t advance_pc (offset )); else advance_pc (2);  
+if $s == $t advance_pc (offset)); else advance_pc (2);  
 Syntax:  
 beq $s, $t, offset  
 Encoding:  
@@ -111,7 +115,7 @@ Encoding:
 >Description:  
 Jumps to the calculated address  
 Operation:  
-PC = target
+PC = target  
 Syntax:  
 j target  
 Encoding:  
