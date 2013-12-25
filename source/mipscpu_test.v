@@ -73,6 +73,8 @@ module mipscpu_test;
 		// Wait 100 ns for global reset to finish
 		
 		// Add stimulus here
+		
+		/* test for alu module */
 		#40000  data_1 = 16'h0004;
 				data_2 = 16'h0005;
 				sel = ADD;
@@ -97,6 +99,9 @@ module mipscpu_test;
 				data_2 = 16'h0005;
 				sel = SLT;
 				$display($time, "%h SLT %h=%h", data_1, data_2, alu_out);
+		/* end test for alu module */
+		
+		
 	end
 	
 	always
