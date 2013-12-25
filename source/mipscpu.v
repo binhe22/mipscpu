@@ -19,6 +19,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module mipscpu(clk, rstn, key_ok, timer, alu_zero_flag, alu_out, data_1, data_2, sel);
+	parameter word_size = 16;
+	parameter op_size = 4;
 
 	input clk;
 	input rstn;
@@ -26,7 +28,7 @@ module mipscpu(clk, rstn, key_ok, timer, alu_zero_flag, alu_out, data_1, data_2,
 	output [3:0] timer;
 	
 	output 			alu_zero_flag;
-	output reg [word_size-1: 0] 	alu_out;
+	output 	[word_size-1: 0] 	alu_out;
 	input 	[word_size-1: 0] 	data_1, data_2;
 	input 	[op_size-1: 0] 	sel;
 	 

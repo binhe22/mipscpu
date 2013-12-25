@@ -54,14 +54,13 @@ module alu (alu_zero_flag, alu_out, data_1, data_2, sel);
 	assign oflow_add = (data_1[word_size-1] == data_2[word_size-1] && add_res[word_size] != data_1[word_size-1]) ? 1 : 0;
   
   output 			alu_zero_flag;
-  output reg [word_size-1: 0] 	alu_out;
+  output [word_size-1: 0] 	alu_out;
   input 	[word_size-1: 0] 	data_1, data_2;
   input 	[op_size-1: 0] 	sel;
   
-  wire
-  
+  reg [word_size-1: 0] 	alu_out;
   assign  alu_zero_flag = (0 == alu_out);
-  always @ (sel or data_1 or data_2)  
+  always @ (*)  
      case  (sel)
       ADD: alu_out <= add_res;
 		OR: alu_out <= data_1 | data_2;
