@@ -3,7 +3,7 @@ mipscpu
 
 Yes, it is a cpu that implements the mips instruction.  
 In this simple implementation, both the instruction and data handled are 16 bits.  
-Reffered to the MIPS ,we designed our instructio as follows:
+Refered to the MIPS ,we designed our instructio as follows:
 
 
 
@@ -101,14 +101,33 @@ Encoding:
 >Description:  
 Branches if the two registers are equal  
 Operation:  
-if $s == $t advance_pc (offset << 1)); else advance_pc (2);  
+if $s == $t advance_pc (offset )); else advance_pc (2);  
 Syntax:  
 beq $s, $t, offset  
 Encoding:  
 1010 ssss tttt iiii
 
-* j reg1 offset
-* addi reg1 reg2 im
+* j target
+>Description:  
+Jumps to the calculated address  
+Operation:  
+PC = target
+Syntax:  
+j target  
+Encoding:  
+1011 tttt tttt 0000
+
+* addi reg1 im
+>Description:  
+Adds a register and a sign-extended immediate value and stores the result in a register  
+Operation:  
+$s = $s + imm; advance_pc (2;  
+Syntax:  
+addi $s, imm  
+Encoding:  
+1100 ssss iiii iiii
+
+
 
 
 
