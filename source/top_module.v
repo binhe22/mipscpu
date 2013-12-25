@@ -1,75 +1,49 @@
 module top_module
 (
-    CLK, RSTn, LED_Out,KEY_OK
+    CLK, RSTn, LED_Out
 );
 
     input CLK;
 	 input RSTn;
-	 input KEY_OK;
 	 output [3:0]LED_Out;
 	 
-	 parameter T = 30'd10_000_000;
-	 reg [29:0]Count1;
+	 /*******************************/
+	 wire M_W;
+	 wire M_ON;
+	 wire R_W;
+	 wire R_ON;
+	 wire [15:0] DATA_BUS;
+	 wire [15:0] ADDR_BUS;
+	 wire [3:0] LED;
+	  Memory U1
+	  (
+		.W( M_W ),
+		.ON( M_ON ), 
+		.CLK( CLK ), 
+		.ADDR( ADDR_BUS ), 
+		.Mem_Bus( DATA_BUS)
+		);   
 	 
-	 reg led0;
-	 reg led1;
-	 reg led2;
-	 reg led3;
+	 	Reg U2
+	  (
+		.W( R_W ),
+		.ON( R_ON ), 
+		.CLK( CLK ), 
+		.ADDR( ADDR_BUS ), 
+		.Mem_Bus( DATA_BUS)
+		);  
+		clk_driver U3
+		(
+			.CLK(CLK), 
+			.RSTn(RSTn), 
+			.LED_Out(LED),
+			.KEY_OK(KEY_OK)
+		);
 	 
-	 initial begin
-		Count1=30'd0;
-		end
-		
+	 /**********************************/
 	 
-	 always @ ( posedge CLK or negedge RSTn )
-		begin
-	    if( !RSTn )	
-	        Count1 <= 30'd0;
-	    else if( Count1 >= T*4 )
-	        Count1 <= 30'd0;
-	    else
-	        Count1 <= Count1 + 1'b1;
-		end
-	
+	 assign LED_Out = LED;
+	 
+	 /***********************************/
 
-	 always @ ( posedge CLK or negedge RSTn )
-        if( !RSTn ) 
-				begin
-				led0 <= 1'b0;
-				led1 <= 1'b0;
-				led2 <= 1'b0;
-				led3 <= 1'b0;
-				end
-		  else if( Count1 >= 0 && Count1 < T )
-          begin 
-				led0 <= 1'b1;
-				led1 <= 1'b0;
-				led2 <= 1'b0;
-				led3 <= 1'b0;
-			end
-        else if( Count1 >= T && Count1 < T*2 )
-			begin	
-				led0 <= 1'b0;
-				led1 <= 1'b1;
-				led2 <= 1'b0;
-				led3 <= 1'b0;
-			end
-		  else if( Count1 >= T*2  && Count1 < T*3 )
-         begin
-				led0 <= 1'b0;
-				led1 <= 1'b0;
-				led2 <= 1'b1;
-				led3 <= 1'b0;
-			end
-        else if( Count1 >= T*3 && Count1 < T*4 )
-			begin
-				led0 <= 1'b0;
-				led1 <= 1'b0;
-				led2 <= 1'b0;
-				led3 <= 1'b1;
-			end
-
-	
-    assign LED_Out = { led3 ,led2, led1, led0 };
 endmodule
- 
