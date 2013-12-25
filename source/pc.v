@@ -18,23 +18,25 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module pc (pc_counter, data_in, load_pc, offset, branch, clk, rst);
-
+module pc (pc_counter, data_in, load_pc, offset, clk, rst);
+	//when increase pc, simply set offset 1 and set data_in 1
+	//when jump to a branch, set load_pc 1 and set data_in the pc value
 	parameter word_size = 16;
 	parameter mem_size = 8;
 	parameter offset_size = 4;
 	output [word_size-1: 0] pc_counter;
-	input [offset_size-1: 0] offset;
-	input [mem_size-1: 0] branch;
+	input offset;
 	input [word_size-1: 0] data_in;
 	input load_pc;
 	input clk, rst;
-
+	
 	reg 	[word_size-1: 0]	pc_counter;
 
-	always @ (posedge clk or negedge rst)
-		if (rst == 0) pc_counter <= 0; 
-		else if (load_pc) pc_counter <= data_in; 
-		else if  (offset) pc_counter <= pc_counter + offset;
-		else if (branch) pc_counter <= branch;
+	always @(load_pc)
+		if (load_pc) pc_counter <= data_in;
+	always @(rst)
+		if (rst) pc_counter <= 0;
+	always @(offset)
+		if (offset) pc_counter <= pc_counter + data_in;
+		
 endmodule
