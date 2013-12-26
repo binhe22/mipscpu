@@ -6,7 +6,7 @@ module clk_divider
     input CLK;
 	 input RSTn;
 	 input KEY_OK;
-	 output [3:0]LED_Out;
+	 output [3:0] LED_Out;
 	 
 	 parameter T = 30'd10_000_000;
 	 reg [29:0]Count1;

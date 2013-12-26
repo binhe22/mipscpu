@@ -132,8 +132,6 @@ Encoding:
 1100 ssss iiii iiii
 
 
-
-
-
-
+Some constant definitions to note when use the instructions
+IR_ADDR = 4'b0000
 
