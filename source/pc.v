@@ -35,13 +35,15 @@ module pc (pc_counter, data_in, load_pc, offset, timer, rst);
 	
 	initial 
 	begin
-		tmp_pc_counter = 0;
+		tmp_pc_counter = 16'h0000;
 	end
 
-	always @(load_pc)
-		if (load_pc) tmp_pc_counter <= data_in;
-	always @(rst)
-		if (rst) tmp_pc_counter <= 0;
-	always @(timer)
-		if (offset) tmp_pc_counter <= tmp_pc_counter + data_in;
+	always @(*)
+		if (load_pc) 
+			tmp_pc_counter = data_in;
+		else if (offset)
+			tmp_pc_counter = tmp_pc_counter + data_in;
+		else if (rst) 
+			tmp_pc_counter = 0;
+		
 endmodule

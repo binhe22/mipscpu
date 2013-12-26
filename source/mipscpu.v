@@ -18,8 +18,9 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module mipscpu(clk, rst, key_ok, alu_zero_flag, sel, data_in, load_pc, offset, 
-			data3_out, data2_out, data1_out, tclk);
+module mipscpu(clk, rst, key_ok, alu_zero_flag, sel, 
+			data3_out, data2_out, data1_out, tclk,
+			pc_counter);
 	//clk_divider
 	input clk;
 	input rst;
@@ -40,10 +41,10 @@ module mipscpu(clk, rst, key_ok, alu_zero_flag, sel, data_in, load_pc, offset,
 	input tclk;
 	
 	//pc
-	wire [`WORD_SIZE-1: 0] pc_counter;
-	input offset;
-	input [`WORD_SIZE-1: 0] data_in;
-	input load_pc;
+	output [`WORD_SIZE-1: 0] pc_counter;
+	wire offset;
+	wire [`WORD_SIZE-1: 0] data_in;
+	wire load_pc;
 	
 	//register
 	wire [`WORD_SIZE-1: 0] reg_data_out;
@@ -76,5 +77,6 @@ module mipscpu(clk, rst, key_ok, alu_zero_flag, sel, data_in, load_pc, offset,
 					
 	alu_control ALU_CONTROL ( .data1_out(data1_out), .data2_out(data2_out), .data3_out(data3_out), .sel(sel), .tclk(tclk), 
 					.alu_data_1(alu_data_1), .alu_data_2(alu_data_2), .alu_out(alu_out), .reg_on(reg_on), .reg_w(reg_w), 
-					.reg_data_in(reg_data_in), .reg_addr(reg_addr));
+					.reg_data_in(reg_data_in), .reg_addr(reg_addr), 
+					.load_pc(load_pc), .data_in(data_in), .offset(offset));
 endmodule
