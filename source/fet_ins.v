@@ -36,6 +36,7 @@ module fet_ins(timer, pc_counter, mem_w, mem_on, mem_addr, mem_data_out,
 	reg [`WORD_SIZE-1: 0] tmp_mem_addr;
 	reg [`WORD_SIZE-1: 0] tmp_reg_data_in;
 	reg [`WORD_SIZE-1: 0] tmp_reg_addr;
+	reg [`WORD_SIZE-1: 0] tmp_ir_reg;
 	reg tmp_reg_w, tmp_reg_on;
 	
 	assign mem_w = tmp_mem_w;

@@ -18,7 +18,7 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module alu (alu_zero_flag, alu_out, data_1, data_2, sel);
+module alu (alu_zero_flag, alu_out, data_1, data_2, sel, clk);
   
 	// Opcodes
 	wire [`WORD_SIZE:0] sub_res;
@@ -32,6 +32,7 @@ module alu (alu_zero_flag, alu_out, data_1, data_2, sel);
 	output [`WORD_SIZE-1: 0] alu_out;
 	input [`WORD_SIZE-1: 0] data_1, data_2;
 	input [`OP_SIZE-1: 0] sel;
+	input clk;
 	
 	assign sub_res = data_1 - data_2;
 	assign add_res = data_1 + data_2;
@@ -39,15 +40,16 @@ module alu (alu_zero_flag, alu_out, data_1, data_2, sel);
 	assign oflow_sub = (data_1[`WORD_SIZE-1] != data_2[`WORD_SIZE-1] && sub_res[`WORD_SIZE-1] == data_2[`WORD_SIZE-1]) ? 1 : 0;
 	assign oflow_add = (data_1[`WORD_SIZE-1] == data_2[`WORD_SIZE-1] && add_res[`WORD_SIZE-1] != data_1[`WORD_SIZE-1]) ? 1 : 0;
   
-	reg [`WORD_SIZE-1: 0] 	alu_out;
-	assign  alu_zero_flag = (0 == alu_out);
-	always @ (*)  
+	reg [`WORD_SIZE-1: 0] 	tmp_alu_out;
+	assign alu_out = tmp_alu_out;
+	assign  alu_zero_flag = (0 == tmp_alu_out);
+	always @(*)  
 		case  (sel)
-			`ADD: alu_out <= add_res;
-			`OR: alu_out <= data_1 | data_2;
-			`SUB: alu_out <= sub_res;
-			`AND: alu_out <= data_1 & data_2;
-			`SLT: alu_out <= (data_1 < data_2) ? 1: 0;
-			default: alu_out <= 0;
+			`ADD: tmp_alu_out = add_res;
+			`OR: tmp_alu_out = data_1 | data_2;
+			`SUB: tmp_alu_out = sub_res;
+			`AND: tmp_alu_out = data_1 & data_2;
+			`SLT: tmp_alu_out = (data_1 < data_2) ? 1: 0;
+			default: tmp_alu_out = 0;
 		endcase 
 endmodule
