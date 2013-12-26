@@ -29,14 +29,19 @@ module pc (pc_counter, data_in, load_pc, offset, timer, rst);
 	input rst;
 	input [`TIMER_SIZE-1:0] timer;
 	
-	reg [`WORD_SIZE-1:0]	pc_counter;
-//	reg [`TIMER_SIZE-1: 0] timer;
+	reg [`WORD_SIZE-1:0]	tmp_pc_counter;
+	
+	assign pc_counter = tmp_pc_counter;
+	
+	initial 
+	begin
+		tmp_pc_counter = 0;
+	end
 
 	always @(load_pc)
-		if (load_pc) pc_counter <= data_in;
+		if (load_pc) tmp_pc_counter <= data_in;
 	always @(rst)
-		if (rst) pc_counter <= 0;
+		if (rst) tmp_pc_counter <= 0;
 	always @(timer)
-		if (offset) pc_counter <= pc_counter + data_in;
-		
+		if (offset) tmp_pc_counter <= tmp_pc_counter + data_in;
 endmodule
