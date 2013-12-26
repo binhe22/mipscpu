@@ -132,10 +132,6 @@ Encoding:
 1100 ssss iiii iiii
 
 
-* register address define
->Description:
+Some constant definitions to note when use the instructions
 IR_ADDR = 4'b0000
-
-
-
 
