@@ -19,16 +19,18 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
 module fet_ins(timer, pc_counter, mem_w, mem_on, mem_addr, mem_data_out,
-					reg_w, reg_on, reg_addr, reg_data_in);
+					reg_w, reg_on, reg_addr, reg_data_in, reg_data_out, ir_reg);
 	input [`WORD_SIZE-1: 0] pc_counter;
 	input [`TIMER_SIZE-1: 0] timer;
 	input [`WORD_SIZE-1: 0] mem_data_out;
+	input [`WORD_SIZE-1: 0] reg_data_out;
 	
 	output mem_w, mem_on;
 	output [`WORD_SIZE-1: 0] mem_addr;
 	output [`WORD_SIZE-1: 0] reg_data_in;
 	output [`WORD_SIZE-1: 0] reg_addr;
 	output reg_w, reg_on;
+	output [`WORD_SIZE-1: 0] ir_reg;
 
 	reg tmp_mem_w, tmp_mem_on;
 	reg [`WORD_SIZE-1: 0] tmp_mem_addr;
@@ -43,6 +45,7 @@ module fet_ins(timer, pc_counter, mem_w, mem_on, mem_addr, mem_data_out,
 	assign reg_w = tmp_reg_w;
 	assign reg_on = tmp_reg_on;
 	assign reg_addr = tmp_reg_addr;
+	assign ir_reg = tmp_ir_reg;
 	
 	always @(timer)
 	begin
@@ -56,6 +59,7 @@ module fet_ins(timer, pc_counter, mem_w, mem_on, mem_addr, mem_data_out,
 					tmp_reg_w = 1;
 					tmp_reg_on = 1;
 					tmp_reg_addr = `IR_ADDR;
+					#20 tmp_ir_reg = reg_data_out;
 				end
 		default:
 				begin

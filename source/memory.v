@@ -16,7 +16,7 @@ module Memory(W,CLK,ON,ADDR, DATA_IN,DATA_OUT);
 		for (k = 0; k < memory_size ; k = k + 1) 
 		begin 
 			memory[k] = k+1; 
-		end 
+		end
 	end
 
 	assign DATA_OUT = ((W == 1'b1) || (ON == 1'b0)) ? 16'bZ : (memory[ADDR]);

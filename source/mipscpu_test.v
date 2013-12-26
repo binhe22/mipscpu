@@ -4,7 +4,7 @@
 // Company: 
 // Engineer:
 //
-// Create Date:   12:39:16 12/26/2013
+// Create Date:   18:35:45 12/26/2013
 // Design Name:   mipscpu
 // Module Name:   C:/fpga/Simple_MIPS/mipscpu_test.v
 // Project Name:  Simple_MIPS
@@ -58,7 +58,7 @@ module mipscpu_test;
 		// Initialize Inputs
 		clk = 0;
 		rst = 0;
-		key_ok = 1;
+		key_ok = 0;
 		data_1 = 0;
 		data_2 = 0;
 		sel = 0;
@@ -67,12 +67,11 @@ module mipscpu_test;
 		offset = 0;
 
 		// Wait 100 ns for global reset to finish
-		#100 rst = 1'b1;
-		#100 load_pc = 1;
-		data_in = 16'h0001;
+		#100;
+        
 		// Add stimulus here
+
 	end
-	always 
-		#20 clk = ~clk;
+      
 endmodule
 
