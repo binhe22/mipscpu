@@ -132,7 +132,9 @@ Encoding:
 1100 ssss iiii iiii
 
 
-
+* register address define
+>Description:
+IR_ADDR = 4'b0000
 
 
 
