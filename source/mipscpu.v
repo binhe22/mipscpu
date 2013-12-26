@@ -18,31 +18,36 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module mipscpu(clk, rstn, key_ok, timer, alu_zero_flag, alu_out, data_1, data_2, sel, pc_counter, data_in, load_pc, offset);
-	parameter word_size = 16;
-	parameter op_size = 4;
-	parameter mem_size = 8;
-	parameter offset_size = 4;
-
+module mipscpu(clk, rst, key_ok, timer, alu_zero_flag, alu_out, data_1, data_2, sel, pc_counter, data_in, load_pc, offset,
+					reg_w, reg_on, reg_addr, reg_data_in, reg_data_out);
+	
 	//clk_divider
 	input clk;
-	input rstn;
+	input rst;
 	input key_ok;
-	output [3:0] timer;
+	output [`TIMER_SIZE-1: 0] timer;
 	
 	//alu 
 	output 			alu_zero_flag;
-	output 	[word_size-1: 0] 	alu_out;
-	input 	[word_size-1: 0] 	data_1, data_2;
-	input 	[op_size-1: 0] 	sel;
+	output 	[`WORD_SIZE-1: 0] 	alu_out;
+	input 	[`WORD_SIZE-1: 0] 	data_1, data_2;
+	input 	[`OP_SIZE-1: 0] 	sel;
 	
 	//pc
-	output [word_size-1: 0] pc_counter;
+	output [`WORD_SIZE-1: 0] pc_counter;
 	input offset;
-	input [word_size-1: 0] data_in;
+	input [`WORD_SIZE-1: 0] data_in;
 	input load_pc;
+	
+	//register
+	output [`WORD_SIZE-1: 0] reg_data_out;
+	input [`WORD_SIZE-1: 0] reg_data_in;
+	input [`WORD_SIZE-1: 0] reg_addr;
+	input reg_w, reg_on;
 	 
-	clk_divider M0_CLK_DIVIDER ( .CLK(clk), .RSTn(rstn), .LED_Out(timer), .KEY_OK(key_ok) );
+	clk_divider M0_CLK_DIVIDER ( .CLK(clk), .RSTn(rst), .LED_Out(timer), .KEY_OK(key_ok) );
 	alu M1_ALU ( .alu_zero_flag(alu_zero_flag), .alu_out(alu_out), .data_1(data_1), .data_2(data_2), .sel(sel) );
-	pc M2_PC ( .pc_counter(pc_counter), .data_in(data_in), .load_pc(load_pc), .offset(offset), .clk(clk), .rst(rstn) );
+	pc M2_PC ( .pc_counter(pc_counter), .data_in(data_in), .load_pc(load_pc), .offset(offset), .timer(timer), .rst(rst) );
+	Reg M3_REG ( .W(reg_w), .CLK(clk), .ON(reg_on), .ADDR(reg_addr), .DATA_IN(reg_data_in), .DATA_OUT(reg_data_out) );
+	
 endmodule
