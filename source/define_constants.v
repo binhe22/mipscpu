@@ -1,8 +1,9 @@
+`timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
 // 
-// Create Date:    09:17:47 12/26/2013 
+// Create Date:    14:25:18 12/26/2013 
 // Design Name: 
 // Module Name:    define_constants 
 // Project Name: 
@@ -16,7 +17,7 @@
 // Revision 0.01 - File Created
 // Additional Comments: 
 //
-////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
 `define WORD_SIZE 16
 `define OP_SIZE 4
 `define MEM_SIZE 8
@@ -41,4 +42,16 @@
 `define CYCLE2 4'b0010
 `define CYCLE3 4'b0100
 `define CYCLE4 4'b1000
+
+`define GET_OP word_size-1:word_size-4
+`define GET_REG1 word_size-5:word_size-8
+`define GET_REG2 word_size-9:word_size-12
+`define GET_REG3 word_size-13:word_size-16
+`define GET_IM word_size-9:word_size-16
+`define GET_OFFSET word_size-13:word_size-16
+`define GET_TARGET word_size-5s:word_size-13
+
+
+
+
 
