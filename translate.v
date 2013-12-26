@@ -39,12 +39,12 @@ module Translate (I_IN,DATA1_OUT,DATA2_OUT,DATA3_OUT,SEL_OUT,DCLK,
 		output [op_size-1: 0] SEL_OUT;
 		
 		output R_W;
-		output [memory_addr-1:0] RADDR;
+		output [word_size-1:0] RADDR;
 		output [word_size-1:0] RDATAOUT;
 		input [word_size-1:0] RDATAIN;
 		
 		output M_W;
-		output [memory_addr-1:0] MADDR;
+		output [word_size-1:0] MADDR;
 		output [word_size-1:0] MDATAOUT;
 		input [word_size-1:0] MDATAIN;
 		
@@ -70,24 +70,44 @@ module Translate (I_IN,DATA1_OUT,DATA2_OUT,DATA3_OUT,SEL_OUT,DCLK,
 		
 		reg r_w;
 		reg [word_size-1:0] rdataout;
-		reg [word_size-1:0] raddr;
+		reg [reg_addr-1:0] raddr;
 		
+		reg [word_size-1:0] data1;
+		reg [word_size-1:0] data2;
+		reg [word_size-1:0] data3;
+
+/*		assign M_W= (!DCLK) ? 1'bZ:m_w;
+		assign MADDR= (~DCLK) ? 16'bz:maddr;
+		assign MDATAOUT= (~DCLK) ? 16'bz:mdataout;
+		
+			assign M_W = (DCLK)? 1'bz:(m_w);
+		assign MADDR = (DCLK)?16'bz:maddr;
+		assign MDATAOUT = (DCLK)?16'bz:mdataout;
 		
 
-		assign M_W = m_w;
-		assign MADDR = maddr;
-		assign MDATAOUT = mdataout;
+		assign R_W= (~DCLK) ? 1'bz:r_w;
+		assign RADDR= (~DCLK) ? 16'bz:raddr;
+		assign RDATAOUT= (~DCLK) ? 16'bz:rdataout;		
+*/
 		
 		assign R_W = r_w;
 		assign RADDR = raddr;
 		assign RDATAOUT = rdataout;
 		
+		assign M_W = m_w;
+		assign MADDR = maddr;
+		assign MDATAOUT = mdataout;
 		
+	
+
 		assign SEL_OUT[op_size-1:0]=sel;
-		assign DATA1_OUT=I_IN;
+
+		assign DATA1_OUT = data1;
+		assign DATA2_OUT = data2;
+		assign DATA3_OUT = data3;
 
 		
-		always @ (posedge DCLK) 
+		always @ (DCLK) 
 		
 		begin
 			case (I_IN[word_size-1:word_size-4])
@@ -95,39 +115,51 @@ module Translate (I_IN,DATA1_OUT,DATA2_OUT,DATA3_OUT,SEL_OUT,DCLK,
 				begin
 					regaddr1=I_IN[`GET_REG1];
 					im=I_IN[`GET_IM];
-					m_w = 1'b1;
+					m_w = 1'b0;
 					maddr = im;
-					memorydata = MDATAIN;
+					regdata1 = MDATAIN;
+					r_w = 1'b1;
+					raddr = im;
+					rdataout = regdata1;
 				end
 				
-			4'b0010:
-				begin
-				end
+
 			`SW:
 				begin
 					regaddr1=I_IN[`GET_REG1];
 					im=I_IN[`GET_IM];
-					r_w = 1'b1;
-					m_w = 1'b0;
+					r_w = 1'b0;
+					raddr = regaddr1;
+					regdata1 = RDATAIN;
+					m_w=1'b1;
+					maddr = im;
+					mdataout = regdata1;
 				end
-			4'b0100:
+	
+
+					
+			`ADD,`SUB,`OR,`AND,`SLT:
 				begin
-				end		
-			4'b0101:
-				begin
+				
+					regaddr1 = I_IN[`GET_REG1];
+					data1[word_size-1:word_size-12]=12'b0000_0000_0000;
+					data1[word_size-13:word_size-16]=regaddr1;
+					
+					regaddr3 = I_IN[`GET_REG3];
+					r_w = 1'b0;
+					raddr = regaddr3;
+					#50 regdata3 = RDATAIN;
+					data3 = regdata3;
+					
+					regaddr2 = I_IN[`GET_REG2];
+					r_w = 1'b0;
+					raddr = regaddr2;
+					#50 regdata2 = RDATAIN;
+					data2 = regdata2;
+					
+					sel = I_IN[word_size-1:word_size-4];
 				end
-			4'b0110:
-				begin
-				end
-			4'b0111:
-				begin
-				end
-			4'b1000:
-				begin
-				end
-			4'b1001:
-				begin
-				end
+
 			`ADDI:
 				begin
 				regaddr1=I_IN[`GET_REG1];
@@ -136,6 +168,37 @@ module Translate (I_IN,DATA1_OUT,DATA2_OUT,DATA3_OUT,SEL_OUT,DCLK,
 				raddr = regaddr1;
 				rdataout = im;
 				end
+				
+			`BEQ :
+				begin
+					regaddr3 = I_IN[`GET_REG3];
+					data3[word_size-1:word_size-12]=12'b0000_0000_0000;
+					data3[word_size-13:word_size-16]=regaddr3;
+					
+					regaddr1 = I_IN[`GET_REG1];
+					r_w = 1'b0;
+					raddr = regaddr1;
+					#50 regdata1 = RDATAIN;
+					data1 = regdata1;
+					
+					regaddr2 = I_IN[`GET_REG2];
+					r_w = 1'b0;
+					raddr = regaddr2;
+					#50 regdata2 = RDATAIN;
+					data2 = regdata2;
+					
+					sel = I_IN[word_size-1:word_size-4];
+				end
+				
+				`JUMP :
+				begin
+					data1[word_size-1:word_size-8]=8'b0000_0000;
+					data1[word_size-9:word_size-16] = I_IN[`GET_TARGET];
+					sel = I_IN[word_size-1:word_size-4];
+					
+				end
+				
+	
 			default:
 				begin
 				end
