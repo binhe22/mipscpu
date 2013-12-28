@@ -177,10 +177,10 @@ Encoding:
     `define JUMP 4'b1011
     `define ADDI 4'b1100
 
-    `define CYCLE1 4'b0001
-    `define CYCLE2 4'b0010
-    `define CYCLE3 4'b0100
-    `define CYCLE4 4'b1000
+    `define STAGE1 4'b0001
+    `define STAGE2'b0010
+    `define STAGE3 4'b0100
+    `define STAGE4 4'b1000
 
     `define GET_OP 15:12
     `define GET_REG1 11:8
