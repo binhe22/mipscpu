@@ -44,6 +44,20 @@ sw $s, im
 Encoding:  
 0011 ssss iiii iiii  
 
+
+* and reg1 reg2 reg3 
+>Description:  
+Adds two registers and stores the result in a register  
+Operation:  
+$d = $s + $t; advance_pc (1);  
+Syntax:  
+add $d, $s, $t  
+Encoding:  
+0101 dddd ssss tttt
+
+
+
+
 * or reg1 reg2 reg3
 >Description:  
 Bitwise logical ors two registers and stores the result in a register  
@@ -139,15 +153,6 @@ Syntax:
 sw $s, im  
 Encoding:  
 0100 ssss iiii iiii  
-* and reg1 reg2 reg3 
->Description:  
-Adds two registers and stores the result in a register  
-Operation:  
-$d = $s + $t; advance_pc (1);  
-Syntax:  
-add $d, $s, $t  
-Encoding:  
-0101 dddd ssss tttt
 
 
 
