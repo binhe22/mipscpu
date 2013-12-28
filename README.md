@@ -1,6 +1,5 @@
 #mipscpu
 
-
 Yes, it is a cpu that implements the mips instruction.  
 In this simple implementation, both the instruction and data handled are 16 bits.  
 Refered to the MIPS ,we designed our instructio as follows:
@@ -157,7 +156,7 @@ Encoding:
 
 
 ##Define
-    `define WORD_SIZE 16
+     `define WORD_SIZE 16
     `define OP_SIZE 4
     `define MEM_SIZE 8
     `define OFFSET_SIZE 4
@@ -185,7 +184,7 @@ Encoding:
     `define GET_OP 15:12
     `define GET_REG1 11:8
     `define GET_REG2 7:4
-    `define GET_REG3 4:0
+    `define GET_REG3 3:0
     `define GET_IM 7:0
     `define GET_OFFSET 3:0
     `define GET_TARGET 12:4
