@@ -1,7 +1,11 @@
 #mipscpu
 
-Yes, it is a cpu that implements the mips instruction.  
-In this simple implementation, both the instruction and data handled are 16 bits.  
+Yes, it is a cpu that implements the subset of  mips instruction.  
+It is an important part of what we are doing -- a computer with its own cpu,input/output module(such as PS2 kerboard and VGA),OS,compiler,file system and even a network stack.
+We want to make  it before we graduate. In our opinion ,it should be a complete system that can be used to make the students who major in computer science have a easy way to practice the knowledge got in classes.
+
+##Instruction Set
+In this simple implementation, both the instruction and data handled are 16 bits. 
 Refered to the MIPS ,we designed our instructio as follows:
 
 
@@ -10,7 +14,7 @@ Refered to the MIPS ,we designed our instructio as follows:
          PC  =  nPC;
          nPC  += offset;
     }
-##Instruction Set
+
 ###Support  
 * halt 
 >Description:  
