@@ -1,20 +1,20 @@
 #mipscpu
 
-Yes, it is a cpu that implements the subset of  mips instruction.  
-It is an important part of what we are doing -- a computer with its own cpu,input/output module(such as PS2 kerboard and VGA),OS,compiler,file system and even a network stack.
-We want to make  it before we graduate. In our opinion ,it should be a complete system that can be used to make the students who major in computer science have a easy way to practice the knowledge got in classes.
+Yes, it is a cpu that implements the subset of  mips instructions set.  
+It is an important part of what we are working on  -- a  computer system  with its own cpu,input/output modules(such as PS2 kerboard and VGA),OS,compiler,file system and even a network stack.
+We want to make  it before we graduate. In our opinion ,it should be a complete system that can be used to make the students who major in computer science have an easy way to practice the knowledge got in classes.  
+You are welcomed if you want to join us.  
 
 ##Instruction Set
-In this simple implementation, both the instruction and data handled are 16 bits. 
+ In this simple implementation, both the instruction and data handled are 16 bits. 
 Refered to the MIPS ,we designed our instructio as follows:
-
-
 
     void advance_pc (Byte offset){
          PC  =  nPC;
          nPC  += offset;
     }
 
+In the future , we will add more instructions and make some changes to what we are using now. Your suggestions are invited.  
 ###Support  
 * halt 
 >Description:  
