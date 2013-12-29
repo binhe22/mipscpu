@@ -1,6 +1,6 @@
 module top_module
 (
-    CLK, RSTn,LEDS, PC_8, IR_8, IR_16, REG0_8, REG1_8, REG2_8, REG3_8,RUNTYPE,STAGE
+    CLK, RSTn,LEDS, PC_8, IR_8, IR_16, REGADDR, RUNTYPE,STAGE
 );
 
 	 parameter word_size = 16;
@@ -17,10 +17,7 @@ module top_module
 	 input PC_8;
 	 input IR_8;
 	 input IR_16;
-	 input REG0_8;
-	 input REG1_8;
-	 input REG2_8;
-	 input REG3_8;
+	 input [3:0] REGADDR;
 	 input RUNTYPE;
 	 output [7:0] LEDS;
 
@@ -61,7 +58,6 @@ module top_module
 
 		Translate U3
 		(
-		//.I_IN(IR),
 		.DCLK(CLK),
 		.M_W(M_W),
 		.MADDR(MADDR_BUS),
@@ -72,33 +68,9 @@ module top_module
 		.PC_8(PC_8), 
 		.IR_8(IR_8), 
 		.IR_16(IR_16), 
-		.REG0_8(REG0_8), 
-		.REG1_8(REG1_8), 
-		.REG2_8(REG2_8), 
-		.REG3_8(REG3_8),
+		.REGADDR(REGADDR),
 		.RUNTYPE(RUNTYPE),
 		.STAGE(STAGE)
 		);
-		
-	/*	Clk_driver U6(
-		.CLK(CLK), 
-		.RSTn(RSTn), 
-		.CLK_OUT(CLKD_BUS)
-		);
-		*/
-	/*	fetch U4(
-		.PC(PC),
-		.IR(IR),
-		.M_W(M_W),
-		.R_W(R_W),
-		.MADDR(MADDR_BUS),
-		.MDATAIN(MDATAOUT_BUS),
-		.MDATAOUT(MDATAIN_BUS),
-		.RADDR(RADDR_BUS),
-		.RDATAIN(RDATAOUT_BUS),
-		.RDATAOUT(RDATAIN_BUS),
-		.DCLK(CLK),
-		.CLK_M(CLK_M2)
-		);*/
 		
 endmodule

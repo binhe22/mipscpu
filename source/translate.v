@@ -19,7 +19,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////////
   module Translate (DCLK, M_W,MADDR,MDATAIN,MDATAOUT,
-						 RSTn,LEDS, PC_8, IR_8, IR_16, REG0_8, REG1_8, REG2_8, REG3_8,RUNTYPE,STAGE);
+						 RSTn,LEDS, PC_8, IR_8, IR_16, REGADDR, RUNTYPE,STAGE);
                                                 
                                                 
                 parameter word_size = 16;
@@ -35,7 +35,7 @@
 
                 assign IR =  I_IN;
 					 
-                output M_W;
+                output M_W; //¶ÁÐ´ÐÅºÅ
                 output [word_size-1:0] MADDR;
                 output [word_size-1:0] MDATAOUT;
                 input [word_size-1:0] MDATAIN;
@@ -43,13 +43,12 @@
 					 input PC_8;
 					 input IR_8;
 					 input IR_16;
-					 input REG0_8;
-					 input REG1_8;
-					 input REG2_8;
-					 input REG3_8;
+					 input [3:0] REGADDR;
+					 
 					 input RUNTYPE;
 					 input STAGE;
 					 
+					 reg [31:0] testcount;
                 reg [op_size-1:0] sel;
                 
                 reg [reg_addr-1:0] regaddr1;
@@ -90,77 +89,39 @@
                 assign DATA3_OUT = data3;
 					 
 					 reg [31:0] count;
-					 reg [31:0] stage;
-					 reg [31:0] stage2;
-//					 reg [word_size-1: 0] REG [15: 0];
-					 reg [word_size-1: 0] REG [3: 0];
+					 reg [2:0] stage;
+					 reg [word_size-1: 0] REG [15: 0];
+					 
+					 wire CHANGE;
+					 reg stage2;
 					 
 					 reg [word_size-1: 0] PC;
 					 parameter T = 20;
-//					 parameter T = 32'd2000000000;
-					 reg PCADDED ;
 					 initial begin
-					 count=0;
-					 stage=0;
-					 stage2=0;
-					 PC=0;
-					 PCADDED = 0;
+						count=0;
+						stage = 3'b000;
+						m_w = 1'b0;
+						testcount = 0;
+						PC = 0;
+						maddr = 0;
 					 end
 					 
-					 
-					 
-					 always @ (posedge DCLK)
-						begin
-							if(RUNTYPE == `AUTO) begin 
-								count = count +1;
-								if(count >= T) begin
-									count=0;
-									stage = stage + 1;
-									if(stage >=5 )
-									begin
-										stage=1;
-									end
-								end
-							end
-							else if(RUNTYPE == `STEP) begin
-								#1 stage = stage2;
-							end
-						end
-					
-					always @(posedge STAGE) begin
-						if(RUNTYPE == `STEP) begin
-							stage2 = (stage==4)?1:(stage+1);
-						end
-					end
-						
-					assign LEDS [7:0] = (PC_8==1)?PC[7: 0]:(
-									(IR_8==1)?I_IN[7: 0]:(
-									(IR_16==1)?I_IN[15: 8]:(
-									(REG0_8==1)?REG[0][7: 0]:(
-									(REG1_8==1)?REG[1][7: 0]:(
-									(REG2_8==1)?REG[2][7: 0]:(
-									(REG3_8==1)?REG[3][7: 0]:8'b00000000
-					))))));
-		 always @(posedge RSTn) begin
-		 end
-		 always @ (stage/* or RSTn*/)
-//					if (RSTn) begin
-//						PC=16'b0000_0000_0000_0000;
-//					end 
-//               else
-					begin
+   			assign CHANGE = (RUNTYPE == `AUTO)? (DCLK):(STAGE);
+
+				always @(posedge CHANGE)
+				begin
+						stage = (stage >=4 )? 1:(stage + 1);
 						if (stage == 1) begin
-							m_w = 1'b0;
-							maddr = PC;
-							#8 I_IN = MDATAIN;
-							PCADDED = 0;
+							I_IN = MDATAIN;
 						end
 						else if(stage == 2) begin
                         case (I_IN[word_size-1:word_size-4])
                         `LW:
                                 begin
                                         regaddr1=I_IN[`GET_REG1];
-                                        im=I_IN[`GET_IM];
+                                        maddr=I_IN[`GET_IM];
+													 m_w = 1'b0;
+													 
                                 end
                                 
                         `SW:
@@ -217,23 +178,20 @@
 							 case (I_IN[word_size-1:word_size-4])
 							 `LW:
 								begin
-									m_w = 1'b0;
-									maddr = im;
-									#8 REG[regaddr1] = MDATAIN;
+								   REG[regaddr1] = MDATAIN;
 								end
 								`SW:
                              begin
 											 regdata1 = REG[regaddr1];
 											 m_w=1'b1;
 											 maddr = im;
+											 mdataout = regdata1;
                               end
 								`ADD: begin
 										regdata1 = REG[regaddr2] + REG[regaddr3];
-										add_overflow = (REG[regaddr2][`WORD_SIZE-1] == REG[regaddr3][`WORD_SIZE-1] && REG[regaddr1][`WORD_SIZE-1] != REG[regaddr2][`WORD_SIZE-1]) ? 1 : 0;
 										end
 								`SUB: begin
 										regdata1 = REG[regaddr2] - REG[regaddr3];
-										sub_overflow = (REG[regaddr2][`WORD_SIZE-1] != REG[regaddr3][`WORD_SIZE-1] && REG[regaddr1][`WORD_SIZE-1] == REG[regaddr3][`WORD_SIZE-1]) ? 1 : 0;
 										end
 								 `OR:
 										regdata1 = REG[regaddr2]|REG[regaddr3];
@@ -247,16 +205,12 @@
 						end
 						else if( stage == 4 )
 						begin
-							 if(PCADDED == 1)
-								;
-							 else
-							 begin
 							 case (I_IN[word_size-1:word_size-4])
 							 `LW:begin
 										PC = PC+1;
 									end
 							 `SW:begin
-									             mdataout = regdata1;
+									             
 													 PC = PC+1;
 								end
 							 `ADD: begin
@@ -266,7 +220,7 @@
 										end
 							`SUB: begin
 										REG[regaddr1] = regdata1;
-										sub_overflow = (REG[regaddr2][`WORD_SIZE-1] == REG[regaddr3][`WORD_SIZE-1] && REG[regaddr1][`WORD_SIZE-1] != REG[regaddr2][`WORD_SIZE-1]) ? 1 : 0;
+										sub_overflow = (REG[regaddr2][`WORD_SIZE-1] != REG[regaddr3][`WORD_SIZE-1] && REG[regaddr1][`WORD_SIZE-1] == REG[regaddr3][`WORD_SIZE-1]) ? 1 : 0;
 										PC=PC+1;
 										end
 							`OR,`AND: begin
@@ -295,8 +249,14 @@
 								 PC=regdata1;   
 								end
 							endcase
-							PCADDED = 1;
-							end
+							m_w = 1'b0;
+							maddr = PC;
 						end
-					end
+				end
+				assign LEDS [7:0] = (PC_8==1)?PC[7: 0]:(
+						(IR_8==1)?I_IN[7: 0]:(
+						(IR_16==1)?I_IN[15: 8]:
+						REG[REGADDR][7:0]
+				));
+
 endmodule
