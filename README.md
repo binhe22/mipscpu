@@ -6,7 +6,7 @@ We want to make  it before we graduate. In our opinion ,it should be a complete 
 You are welcomed if you want to join us.  
 
 ##Instruction Set
- In this simple implementation, both the instruction and data handled are 16 bits. 
+With this simple implementation, both the instruction and data handled are 16 bits. 
 Refered to the MIPS ,we designed our instructio as follows:
 
     void advance_pc (Byte offset){
