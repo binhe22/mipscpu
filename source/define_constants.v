@@ -23,7 +23,7 @@
 `define MEM_SIZE 8
 `define OFFSET_SIZE 4
 `define TIMER_SIZE 4
-`define IR_ADDR 4'b0000
+`define OVERFLOW_ADDR 4'b0111
 
 `define LW 4'b0001
 `define LB 4'b0010

@@ -1,0 +1,25 @@
+#Pin Assignment for LEDs
+NET "LEDS<7>" LOC="g1";
+NET "LEDS<6>" LOC="p4";
+NET "LEDS<5>" LOC="n4";
+NET "LEDS<4>" LOC="n5";
+NET "LEDS<3>" LOC="p6";
+NET "LEDS<2>" LOC="p7";
+NET "LEDS<1>" LOC="m11";
+NET "LEDS<0>" LOC="m5";
+
+NET "RSTn" LOC = "a7";
+NET "STAGE" LOC = "m4";
+
+//controls the out with switches.
+NET "PC_8" LOC = "p11";
+NET "IR_8" LOC = "l3";
+NET "IR_16" LOC = "k3";
+NET "REGADDR<0>" LOC = "b4";
+NET "REGADDR<1>" LOC = "g3";
+NET "REGADDR<2>" LOC = "f3";
+NET "REGADDR<3>" LOC = "e2";
+NET "RUNTYPE" LOC = "n3";
+
+NET "CLK" LOC="b8";
+
