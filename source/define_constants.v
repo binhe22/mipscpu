@@ -43,13 +43,13 @@
 `define CYCLE3 4'b0100
 `define CYCLE4 4'b1000
 
-`define GET_OP word_size-1:word_size-4
-`define GET_REG1 word_size-5:word_size-8
-`define GET_REG2 word_size-9:word_size-12
-`define GET_REG3 word_size-13:word_size-16
-`define GET_IM word_size-9:word_size-16
-`define GET_OFFSET word_size-13:word_size-16
-`define GET_TARGET word_size-5:word_size-12
+`define GET_OP 15:12
+`define GET_REG1 11:8
+`define GET_REG2 7:4
+`define GET_REG3 3:0
+`define GET_IM 7:0
+`define GET_OFFSET 3:0
+`define GET_TARGET 11:4
 
 
 `define STEP 1'b0
@@ -63,7 +63,8 @@
 `define VGA_BUF_SIZE 16'h1400   //a word is 2 bytes
 `define VGA_BUF2_START 16'h1400  //16'h0000 + 16'h1400
 
-`define CHA_BUF_START 16'h0000  //in io memory
+`define PC_START 16'h0000
+`define CHA_BUF_START 16'h0080  //in io memory
 `define CHA_BUF_SIZE 16'd2400  //80*30 characters
 `define FONT_COLOR 8'b00011100
 
