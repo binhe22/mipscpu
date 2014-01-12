@@ -24,8 +24,10 @@ module writememory(
 			output reg[15:0] WADDR_CPU,DATA_OUT_CPU,ADDROUT,DATAOUT,IROUT,
 			output reg MW_CPU_ON,REALPCWRITEBACK ,
 			output reg[15:0] OFFSET,
-			input [15:0] PCIN
-			
+			input [15:0] PCIN,
+			output reg[15:0] RADDR_CPU,
+			input [15:0] DATA_IN_CPU
+			   
     );
 	 
 	 reg [3:0] op;
@@ -39,6 +41,7 @@ module writememory(
 			DATA_OUT_CPU = 16'b0000_0000_0000_0000;
 			OFFSET = 0;	
 			op = 0;
+			
 	 end
 	 
 	 always@(posedge CLK)
@@ -63,13 +66,14 @@ module writememory(
 			`SW:
 			begin
 				MW_CPU_ON = 1'b1;
-				WADDR_CPU = ADDRIN;
+				WADDR_CPU[15:8] = 8'b0000_0000;
+				WADDR_CPU[7:0] = ADDRIN;
 				DATA_OUT_CPU = DATAIN;
 				
 				REALPCWRITEBACK = 1'b1;
 				OFFSET=1+PCIN;
 			end
-			`ADD,`SUB,`AND,`OR:
+			`ADD,`SUB,`AND,`OR,`ADDI:
 			begin
 				REALPCWRITEBACK = 1'b1;
 				OFFSET=1+PCIN;
@@ -79,6 +83,21 @@ module writememory(
 				REALPCWRITEBACK = 1'b1;
 				OFFSET = DATAIN;
 			end
+			`LW:
+			begin
+				RADDR_CPU = DATAIN;
+				REALPCWRITEBACK = 1'b1;
+				OFFSET = PCIN+1;
+			end
+			`BEQ:
+			begin
+				REALPCWRITEBACK = 1'b1;
+				if(DATAIN)
+					OFFSET = PCIN+ADDRIN;
+				else
+					OFFSET = PCIN+1;
+			end
+				
 			endcase
 		end
 	 end
@@ -93,6 +112,14 @@ module writememory(
 				IROUT = IRIN;
 				ADDROUT = ADDRIN;
 				DATAOUT = DATAIN;
+				case (op)
+				`LW:
+				begin
+					DATAOUT = DATA_IN_CPU;
+					ADDROUT = ADDRIN;
+				end
+				endcase
+			
 			end
 			else
 			begin

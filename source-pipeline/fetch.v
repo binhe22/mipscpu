@@ -57,8 +57,14 @@ module fetch(RADDR_CPU,DATA_IN,STAGE1IN,STAGE1OUT,IROUT,PCOUT,PCIN,STAGE1WRITEBA
 	 begin
 		if(STAGE1IN)
 		begin
-			pc = PCIN;
-			gonext = 1'b1;
+			if(ir[`GET_OP] == 4'b1111)
+			begin
+			end
+			else
+			begin
+				pc = PCIN;
+				gonext = 1'b1;
+			end
 		end
 		else
 		begin

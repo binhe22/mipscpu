@@ -40,8 +40,8 @@
 	
 	initial
 	begin
-		tmppc = 0;
-		realpc  = 0;
+		tmppc = 16'd0;
+		realpc  = 16'd0;
 		writingreg = ZERO;
 		point = 0;
 		i = 0;
@@ -73,12 +73,9 @@
 		if(STAGE1WRITEBACK)
 			tmppc = tmppc + 1;
 			
-		if(ENDWRITE == 1'b1)
-			begin
-				writingreg[ENDREG] = 1'b0;
-			end
+
 			
-		if((OFFSET -realpc>1) && REALPCWRITEBACK)begin
+		if((OFFSET -realpc != 1) && REALPCWRITEBACK)begin
 			STAGE1IN = ZERO;
 			STAGE2IN = ZERO;
 			STAGE3IN = ZERO;
@@ -102,7 +99,7 @@
 			STAGE2OUT = ZERO;
 			STAGE3OUT = ALLONE;
 			STAGE4OUT = ALLONE;
-			tmppc = realpc;
+			tmppc = tmppc-2;
 		end
 		else
 		begin
@@ -116,6 +113,10 @@
 			STAGE3OUT = ALLONE;
 			STAGE4OUT = ALLONE;
 		end
+		if(ENDWRITE == 1'b1)
+			begin
+				writingreg[ENDREG] = 1'b0;
+			end
 		
 		if(WILLWRITE == 1'b1)
 			begin

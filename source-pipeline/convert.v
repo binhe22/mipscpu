@@ -113,7 +113,27 @@ module convert(
 			end
 			`ADDI:
 			 begin
+				WILLWRITE = 1'b1;
+				STARTREG = reg1;
 			 end	
+			 `SW:
+			 begin
+				raddr1 =reg1;
+				READREG = 1'b1;
+				READREG1 = reg1;
+			 end
+			 `LW:
+			 begin
+			 end
+			 `BEQ:
+			 begin
+				READREG = 1'b1;
+				READREG1 = reg1;
+				READREG2 = reg2;
+				
+				raddr1= reg1;
+				raddr2= reg2;
+			 end
 			
 			default
 			begin
@@ -145,14 +165,29 @@ module convert(
 				dataout1 = reg1;
 				dataout2 = im;
 			end
+			`SW:
+			begin
+				dataout1 = DATAIN1;
+				dataout2 = im;
+			end
+			`LW:
+			begin
+				dataout1 = reg1;
+				dataout2 = im;
+			end
+			`BEQ:
+			begin
+				dataout1 = DATAIN1;
+				dataout2 = DATAIN2;
+				dataout3 = offset;
+			end
 			default
 			begin
-				raddr1 = 4'b0000;
-				raddr2 = 4'b0000;	
 				dataout1 = ZERO;
 				dataout2 = ZERO;
 				dataout3 = ZERO;
 			end
+			
 		endcase
 		
 		lastir = ir;

@@ -27,7 +27,7 @@ module writereg(
 		WADDR = 4'b0000;
 		ENDWRITE = 1'b0;
 		case (IRIN[`GET_OP])
-		`ADD,`SUB,`OR,`AND,`SLT,`ADDI:
+		`ADD,`SUB,`OR,`AND,`SLT,`ADDI,`LW:
 		begin	
 			W_ON = 1'b1;
 			WADDR =  ADDRIN[3:0];
