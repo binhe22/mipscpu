@@ -64,8 +64,8 @@
 `define VGA_BUF2_START 16'h1400  //16'h0000 + 16'h1400
 
 `define PC_START 16'h0000
-`define CHA_BUF_START 16'h0080  //in io memory
-`define CHA_BUF_SIZE 16'd2400  //80*30 characters
+`define SCREEN_BUF_START 16'h0000  //in io memory
+`define SCREEN_BUF_SIZE 16'd2400  //80*30 characters
 `define FONT_COLOR 8'b00011100
 
 //ascii_code

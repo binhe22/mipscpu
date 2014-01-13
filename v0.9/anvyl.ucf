@@ -1,0 +1,38 @@
+NET "CLK"  LOC = "D11"  ;
+NET "B<0>"  LOC = "N7"  ;
+NET "B<1>"  LOC = "P7"  ;
+NET "G<0>"  LOC = "M6"  ;
+NET "G<1>"  LOC = "H6"  ;
+NET "G<2>"  LOC = "N6"  ;
+NET "Hsync"  LOC = "V17"  ;
+NET "R<0>"  LOC = "B2"  ;
+NET "R<1>"  LOC = "H3"  ;
+NET "R<2>"  LOC = "H4"  ;
+NET "SWS<0>"  LOC = "V5"  ;
+NET "SWS<1>"  LOC = "U4"  ;
+NET "SWS<2>"  LOC = "V3"  ;
+NET "SWS<3>"  LOC = "P4"  ;
+NET "SWS<4>"  LOC = "R4"  ;
+NET "SWS<5>"  LOC = "P6"  ;
+NET "SWS<6>"  LOC = "P5"  ;
+NET "SWS<7>"  LOC = "P8"  ;
+NET "Vsync"  LOC = "V18"  ;
+
+NET "LEDS<0>" LOC = "W3";
+NET "LEDS<1>" LOC = "Y4";
+NET "LEDS<2>" LOC = "Y1";
+NET "LEDS<3>" LOC = "Y3";
+NET "LEDS<4>" LOC = "AB4";
+NET "LEDS<5>" LOC = "W1";
+NET "LEDS<6>" LOC = "AB3";
+NET "LEDS<7>" LOC = "AA4";
+NET "LED9" LOC = "R7";
+
+NET "BTNS<0>" LOC = "E6";
+NET "BTNS<1>" LOC = "D5";
+NET "BTNS<2>" LOC = "A3";
+NET "BTNS<3>" LOC = "AB9";
+
+NET "KCLK" CLOCK_DEDICATED_ROUTE = FALSE;
+Net "KDATA" LOC = "L17" | IOSTANDARD = LVCMOS33 | PULLUP;
+Net "KCLK" LOC = "K17" | IOSTANDARD = LVCMOS33 | PULLUP;
