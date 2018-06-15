@@ -1,11 +1,11 @@
-#mipscpu
+# mipscpu
 
 Yes, it is a cpu that implements the subset of  mips instructions set.  
 It is an important part of what we are working on  -- a  computer system  with its own cpu,input/output modules(such as PS2 kerboard and VGA),OS,compiler,file system and even a network stack.
 We want to make  it before we graduate. In our opinion ,it should be a complete system that can be used to make the students who major in computer science have an easy way to practice the knowledge got in classes.  
 You are welcomed if you want to join us.  
 
-##Instruction Set
+## Instruction Set
 With this simple implementation, both the instruction and data handled are 16 bits. 
 Refered to the MIPS ,we designed our instructio as follows:
 
@@ -15,7 +15,7 @@ Refered to the MIPS ,we designed our instructio as follows:
     }
 
 In the future , we will add more instructions and make some changes to what we are using now. Your suggestions are invited.  
-###Support  
+### Support  
 * halt 
 >Description:  
 Set IR 0000 0000 0000 0000,do nothing. 
@@ -136,7 +136,7 @@ Encoding:
 Some constant definitions to note when use the instructions
 IR_ADDR = 4'b0000
 
-###Not Support Yet
+### Not Support Yet
 
 * lb reg1  im
 >Description:  
@@ -159,7 +159,7 @@ Encoding:
 0100 ssss iiii iiii  
 
 
-##Define
+## Define
      `define WORD_SIZE 16
     `define OP_SIZE 4
     `define MEM_SIZE 8
